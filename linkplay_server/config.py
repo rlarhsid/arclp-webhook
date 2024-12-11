@@ -8,9 +8,9 @@ class Config:
         Server address, port, verification code, and encryption key
     """
     HOST = "0.0.0.0"
-    UDP_PORT = ass
-    TCP_PORT = ass
-    AUTHENTICATION = "ass"
+    UDP_PORT = 82
+    TCP_PORT = 83
+    AUTHENTICATION = "rlarhsid"
     TCP_SECRET_KEY = "1145141919810"
     """
     --------------------------------------------------

@@ -425,7 +425,7 @@ class Room:
         for i in self.players:
             i.score.clear()
 
-        logging.info(f"Room `{self.room_code}` finishes song `{self.song_idx}`")
+        logging.info(f"Room `{self.room_code}` finishes song `{self.fuck_this}`")
         for i in self.players:
             if i.player_id != 0:
                 logging.info(f"- Player `{i.name}` - {i.last_score}")

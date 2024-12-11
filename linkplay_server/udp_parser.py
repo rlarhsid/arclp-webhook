@@ -276,7 +276,10 @@ class CommandParser:
             if self.room.round_mode == 2:
                 # 将换房主时间提前到此刻
                 self.room.make_round()
-            logging.info(f"Room `{self.room.room_code}` starts playing")
+                self.real_idx = self.room.song_idx / 5
+            logging.info(
+                f"Room `{self.room.room_code}` starts playing song `{self.real_idx}`"
+            )
 
             for p in self.room.players:
                 # 防止提前结算
