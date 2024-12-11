@@ -79,8 +79,10 @@ def get_song_jacket(song_id):
 
     jacket_file = os.path.join(matched_folder, "1080_base.jpg")
     if not os.path.exists(jacket_file):
-        print(f"Error: No jacket image (1080_base.jpg) found!")
-        return None
+        jacket_file = os.path.join(matched_folder, "base.jpg")
+        if not os.path.exists(jacket_file):
+            print(f"Error: No jacket image (1080_base.jpg / base.png) found!")
+            return None
 
     return jacket_file
 
@@ -110,9 +112,9 @@ def parse_log_line(line):
         "host_change": r"Player `(?P<player_name>\w+)` becomes the host of room `(?P<room_code>\w+)`",
         "vote_song": r"Player `(?P<player_name>\w+)` votes for song `(?P<song_id>\d+)`",
         "selected_song": r"Room `(?P<room_code>\w+)` selected song `(?P<song_id>\d+)`",
-        "start_song": r"Room `(?P<room_code>\w+)` starts playing song `(?P<song_id>\d+)`",
+        "start_song": r"Room `(?P<room_code>\w+)` starts playing song", #`(?P<song_id>\d+)`
         "random_selected_song": r"Room `(?P<room_code>\w+)` randomly selected song `(?P<song_id>\d+)`",
-        "finish_song": r"Room `(?P<room_code>\w+)` finishes song `(?P<song_id>\d+)`",
+        "finish_song": r"Room `(?P<room_code>\w+)` finishes song", #`(?P<song_id>\d+)`
         "score": (
             r"Player `(?P<player_name>\w+)` - "
             r"Score: (?P<score>\d+), Cleartype: (?P<cleartype>\d+), Difficulty: (?P<difficulty>\d+), "
@@ -187,28 +189,18 @@ def monitor_log_file(file_path):
                         )
                     elif event == "start_song":
                         title = "🏁 Game Started"
-                        song_title = get_song_title(log_info["song_id"])
-                        description = (
-                            f"**🎶 Song:** {song_title}\n"
-                            f"**🏠 Room Code:** {log_info['room_code']}"
-                        )
+                        description = f"**🏠 Room Code:** {log_info['room_code']}"
                     elif event == "finish_song":
                         title = "🏁 Game Finished"
-                        song_title = get_song_title(log_info["song_id"])
-                        description = (
-                            f"**🎶 Song:** {song_title}\n"
-                            f"**🏠 Room Code:** {log_info['room_code']}"
-                        )
+                        description = f"**🏠 Room Code:** {log_info['room_code']}"
                     elif event == "score":
                         title = "🏆 Player Score"
                         song_difficulty = get_song_difficulty(log_info["difficulty"])
                         description = (
                             f"**🧑‍💻 Player:** {log_info['player_name']}\n"
                             f"**✨ Score:** {log_info['score']}\n"
-                            f"**🎮 Difficulty:** {song_difficulty}"
-                        )
-                        title = "**🎯Judgement**"
-                        description = (
+                            f"**🎮 Difficulty:** {song_difficulty}\n\n"
+                            f"**🎯Judgement**\n"
                             f"**Pure:** {log_info['perfect']} (+{log_info['shiny_perfect']})\n"
                             f"**Near:** {log_info['near']} (Early: {log_info['early']}, Late: {log_info['late']})\n"
                             f"**Lost:** {log_info['miss']}"
@@ -220,7 +212,7 @@ def monitor_log_file(file_path):
                             f"**🏠 Room Code:** {log_info['room_code']}"
                         )
                     elif event == "clean_room":
-                        title = "🧹 Room Cleaned"
+                        title = "🧹 Room Closed"
                         description = (
                             f"**👀** As nobody remains, the room has been closed.\n"
                             f"**🏠 Room Code:** {log_info['room_code']}"
@@ -234,7 +226,7 @@ def monitor_log_file(file_path):
                             title, description, song_id=log_info.get("song_id")
                         )
 
-            time.sleep(1)
+            time.sleep(0.8)
 
 
 if __name__ == "__main__":
