@@ -2,7 +2,7 @@
 The worst Linkplay webhook utilty ever made
 
 ## Warnings
-This is my first project to make something that actually works, and is enough good to share to people. There probably should be many issues, tell me or fix them if you can.
+This is my first project to make something that actually works, and is good enough to share to people. There probably should be many issues, tell me or fix them if you can.
 
 ## How to use
 Simply download the files, and place them where you want. Configure the dotenv file, and you're good to go. Note that you'll need some python libraries. I was too lazy to make a requirements.txt, so just see the "linklog_v2.py" file and guess what you'll need lul
